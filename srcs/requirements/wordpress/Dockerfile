@@ -1,15 +1,30 @@
 FROM debian:buster
 
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install wget -y 
-RUN apt install -y php7.3-fpm php7.3-common php7.3-mysql php
-RUN wget https://wordpress.org/latest.tar.gz
-RUN tar -xvzf latest.tar.gz
-RUN mkdir -p /var/www/html/
-RUN mv wordpress/* /var/www/html/
-COPY wp-config.php /var/www/html/wp-config.php
-COPY www.conf /etc/php/7.3/fpm/pool.d/www.conf
-COPY start.sh .
+# instalation
+RUN apt-get update && apt-get install -y \
+    php7.3-fpm \
+    php7.3-mysql \
+    mariadb-client \
+    wget && \
+    rm -rf /var/lib/apt/lists/*
 
-CMD ["sh", "start.sh"]
+# change listen parameter to wordpress:9000
+COPY www.conf /etc/php/7.3/fpm/pool.d
+
+# wordpress instalation
+WORKDIR /var/www
+RUN wget https://wordpress.org/latest.tar.gz && \
+    tar -xzvf latest.tar.gz && \
+    rm -rf latest.tar.gz && \
+    rm -rf ./wordpress/wp-config-sample.php
+
+# set wordpress configurations
+COPY wp-config.php ./wordpress 
+
+# to fix error: enable create .pid file, cause /run/php directory doesn't exist
+RUN mkdir /run/php
+
+EXPOSE 9000
+
+# run php-fpm7.3 listening for CGI request and force to stay in foreground and ignore daemonize option fromm configuration file
+CMD ["php-fpm7.3", "-F"]

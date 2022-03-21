@@ -1,54 +1,67 @@
-version: "3"
+version: '3'
+
 services:
     mariadb:
+        container_name: mariadb
         build: ./requirements/mariadb
         image: mariadb
-        container_name: mariadb
-        volumes:
-            - mariadb_data:/var/lib/mysql
-        restart: always
-        networks: 
-            - wp
-        env_file:
-            - .env
-    nginx:
-        build: ./requirements/nginx
-        image: nginx
-        container_name: nginx
         ports:
-            - 443:443
-        depends_on: 
-            - wordpress
+            - "3306::3306"
+        networks:
+            - inception
         volumes:
-            - wp_data:/var/www/html
-        networks: 
-            - wp
+            - mariadb_volume:/var/lib/mysql
         restart: always
     wordpress:
+        container_name: wordpress
         build: ./requirements/wordpress
         image: wordpress
-        container_name: wordpress
-        depends_on: 
-            - mariadb
+        ports:
+            - "9000:9000"
+        networks:
+            - inception
         volumes:
-            - wp_data:/var/www/html
+            - wordpress_volume:/var/www/wordpress
+        environment:
+            - DB_NAME=${DB_NAME}
+            - HOST_NAME=${HOST_NAME}
+            - USER_NAME=${USER_NAME}
+            - USER_PASS=${USER_PASS}
+        depends_on:
+            - mariadb
         restart: always
-        networks: 
-            - wp
+    nginx:
+        container_name: nginx
+        build: ./requirements/nginx
+        image: nginx
+        ports:
+            - "443:443"
+        networks:
+            - inception
+        volumes:
+            - wordpress_volume:/var/www/wordpress
+        environment:
+            - DB_NAME=${DB_NAME}
+            - USER_NAME=${USER_NAME}
+            - USER_PASS=${USER_PASS}
+            - ROOT_PASS=${ROOT_PASS}
+        depends_on:
+          - wordpress
+        restart: always
 
-networks: 
-    wp:
-        driver: bridge
+networks:
+    inception:
+
 volumes:
-    mariadb_data:
+    mariadb_volume:
         driver: local
         driver_opts:
-                type: 'none'
-                device: '/home/jludt/data/mysql'
-                o: bind
-    wp_data:
+            type: 'none'
+            o: 'bind'
+            device: '${VOLUME_PATH}/mariadb'
+    wordpress_volume:
         driver: local
         driver_opts:
-                type: 'none'
-                device: '/home/jludt/data/wp'
-                o: bind
+            type: 'none'
+            o: 'bind'
+            device: '${VOLUME_PATH}/wordpress'
