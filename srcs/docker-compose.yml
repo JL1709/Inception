@@ -1,10 +1,11 @@
+# https://steveperkins.com/running-wordpress-on-docker-the-definitive-guide/
 # The Compose file is a YAML file defining services, networks, and volumes for a Docker application.
 
 # Compose file version
 # version 3:    Designed to be cross-compatible between Compose and the Docker Engine’s swarm mode, 
 #               version 3 removes several options and adds several more.
+#               If not specified further, 3.0 is selected
 version: '3'
-
 
 # A service definition contains configuration that is applied to each container started for that service
 # As with docker run, options specified in the Dockerfile, such as CMD, EXPOSE, VOLUME, ENV,
