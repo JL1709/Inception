@@ -1,10 +1,40 @@
+# The Compose file is a YAML file defining services, networks, and volumes for a Docker application.
+
+# Compose file version
+# version 3:    Designed to be cross-compatible between Compose and the Docker Engine’s swarm mode, 
+#               version 3 removes several options and adds several more.
 version: '3'
 
+
+# A service definition contains configuration that is applied to each container started for that service
+# As with docker run, options specified in the Dockerfile, such as CMD, EXPOSE, VOLUME, ENV,
+# are respected by default - you don’t need to specify them again in docker-compose.yml
+# You can use environment variables in configuration values with a Bash-like ${VARIABLE} syntax 
+
+# container_name:   Specify a custom container name, rather than a generated default name.
+# image:            Specify the image to start the container from.
+#                   If the image does not exist, Compose attempts to pull it, unless you have also 
+#                   specified "build", in which case it builds it using the specified option
+# build:            Configuration options that are applied at build time.
+#                   build can be specified either as a string containing a path to the build (Dockerfile)
+#                   Or, as an object with the path specified under context and optionally 
+# ports:            Expose ports
+#                   Short syntax: Specify both ports (HOST:CONTAINER)
+# network:          Set the network containers connect to for the RUN instructions during build.
+# volumes:          Mount host paths or named volumes, specified as sub-options to a service.
+#                   Short syntax:   The short syntax uses the generic [SOURCE:]TARGET[:MODE] format, 
+#                                   where SOURCE can be either a host path or volume name. 
+#                                   TARGET is the container path where the volume is mounted.
+#                                   used here: named volume
+# restart:          When always is specified, the container always restarts.
+# envirotnment:     Add environment variables. You can use either an array or a dictionary.
+# depends_on        Express dependency between services.
+#                   "docker-compose up" starts services in dependency order.
 services:
     mariadb:
         container_name: mariadb
-        build: ./requirements/mariadb
         image: mariadb
+        build: ./requirements/mariadb
         ports:
             - "3306::3306"
         networks:
@@ -14,8 +44,8 @@ services:
         restart: always
     wordpress:
         container_name: wordpress
-        build: ./requirements/wordpress
         image: wordpress
+        build: ./requirements/wordpress
         ports:
             - "9000:9000"
         networks:
@@ -32,8 +62,8 @@ services:
         restart: always
     nginx:
         container_name: nginx
-        build: ./requirements/nginx
         image: nginx
+        build: ./requirements/nginx
         ports:
             - "443:443"
         networks:
@@ -49,9 +79,23 @@ services:
           - wordpress
         restart: always
 
+# By default Compose sets up a single network for your app
+# Each container for a service joins the default network and is both reachable by other containers 
+# on that network, and discoverable by them at a hostname identical to the container name.
+# Instead of just using the default app network, you can specify your own networks with the top-level "networks" key.
+# Each service can specify what networks to connect to with the service-level "networks" key, 
+# which is a list of names referencing entries under the top-level networks key.
 networks:
     inception:
 
+# volumes:      While it is possible to declare volumes on the fly as part of the service declaration, 
+#               this section allows you to create named volumes that can be reused across multiple services
+# driver:       specify which volume driver should be used for this volume. 
+#               Defaults to whatever driver the Docker Engine has been configured to use, which in most cases is local. 
+# driver_opts:  Specify a list of options as key-value pairs to pass to the driver for this volume.
+# type:         'none' -> no physical disk partition linked to the mount point
+# o:            ???
+# device:       path to safed volumes        
 volumes:
     mariadb_volume:
         driver: local
