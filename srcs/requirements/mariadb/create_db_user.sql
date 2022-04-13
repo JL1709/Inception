@@ -2,7 +2,7 @@
 -- https://docs.rackspace.com/support/how-to/create-and-edit-users-in-mysql/
 
 -- CREATE DATABASE wordpress                            create database for wordpress
--- CREATE USER 'jludt'@'%' IDENTIFIED BY 'password'     why '%' ????? and not 'localhost'?
+-- CREATE USER 'jludt'@'%' IDENTIFIED BY 'password'     % stands for "everything" 
 --                                                      create a new user and set a password
 -- GRANT ALL PRIVILEGES ON wordpress.* TO 'jludt'@'%'   allow new user to have full access to it so that 
 --                                                      they can create, read, update, and delete records 

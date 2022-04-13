@@ -28,8 +28,8 @@ COPY create_db_user.sql /
 
 # START WORKING HERE!!!!!!!
 # service mysql start:          start MariaDB server
-# mysql < create_db_user.sql    ...with created user in file create_db_user.sql   ???
-# rm -rf create_db_user.sql     why remove???
+# mysql < create_db_user.sql    ...with created user in file create_db_user.sql
+# rm -rf create_db_user.sql     ...and remove it because it user already created
 
 RUN service mysql start && \
     mysql < create_db_user.sql && \

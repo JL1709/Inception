@@ -1,6 +1,13 @@
 FROM debian:buster
 
-# installation, openssl - library that contains SSL and TLS
+# INSTALLATIONS
+# install nginx
+# install openssl   library that contains SSL and TLS
+#                   a nginx ssl certificate is used to protect your webserver through encrypted HTTPS data transfer
+#                   SSL (Secure Sockets Layer) - standard technology for securing Internet connections and protecting 
+#                                                sensitive data transferred between two systems 
+#                   TLS (Transport Layer Security) - TLS is just an updated version of SSL that provides higher security. 
+# rm...             cleare cache
 RUN apt-get update && apt-get install -y \
     nginx \
     openssl && \
@@ -14,5 +21,6 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/private
 
 EXPOSE 443
 
-#If you add a custom CMD in the Dockerfile, be sure to include -g daemon off; in the CMD in order for nginx to stay in the foreground, so that Docker can track the process properly (otherwise your container will stop immediately after starting)!
+# If you add a custom CMD in the Dockerfile, be sure to include -g daemon off; in the CMD in order for nginx to stay in the foreground, 
+# so that Docker can track the process properly (otherwise your container will stop immediately after starting)!
 CMD ["nginx", "-g", "daemon off;"]
