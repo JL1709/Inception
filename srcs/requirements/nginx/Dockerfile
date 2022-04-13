@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 # set nginx configuration
-COPY nginx.conf /etc/nginx/sites-available
+COPY default /etc/nginx/sites-available
 
 # create openssl certificate
 # https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html

@@ -9,8 +9,8 @@ FROM debian:buster
 # rm -rf /var/lib/apt/lists/*:          good practice for writing Dockerfiles
 #                                       every apt command gets written inside a list
 #                                       to keep image size small, erase the cache                                  
-RUN apt-get update && \
-    apt-get install -y mariadb-server && \
+RUN apt-get update && apt-get install -y \
+    mariadb-server && \
     rm -rf /var/lib/apt/lists/*
 
 
@@ -21,7 +21,7 @@ RUN apt-get update && \
 # filesystem of the container at the path <dest>.
 
 # load MariaDB config file
-COPY 50-server.conf /etc/mysql/mariadb.conf.d
+COPY 50-server.cnf /etc/mysql/mariadb.conf.d
 # create database and users
 COPY create_db_user.sql /
 

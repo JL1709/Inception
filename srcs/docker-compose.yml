@@ -54,10 +54,10 @@ services:
         volumes:
             - wordpress_volume:/var/www/wordpress
         environment:
-            - DB_NAME=${DB_NAME}
-            - HOST_NAME=${HOST_NAME}
-            - USER_NAME=${USER_NAME}
-            - USER_PASS=${USER_PASS}
+            - DB_NAME=wordpress
+            - HOST_NAME=mariadb
+            - USER_NAME=jludt
+            - USER_PASS=password
         depends_on:
             - mariadb
         restart: always
@@ -72,10 +72,14 @@ services:
         volumes:
             - wordpress_volume:/var/www/wordpress
         environment:
-            - DB_NAME=${DB_NAME}
-            - USER_NAME=${USER_NAME}
-            - USER_PASS=${USER_PASS}
-            - ROOT_PASS=${ROOT_PASS}
+            # - DB_NAME=${DB_NAME}
+            # - USER_NAME=${USER_NAME}
+            # - USER_PASS=${USER_PASS}
+            # - ROOT_PASS=${ROOT_PASS}
+            - DB_NAME=wordpress
+            - USER_NAME=jludt
+            - USER_PASS=password
+            - ROOT_PASS=4242
         depends_on:
           - wordpress
         restart: always
@@ -101,12 +105,14 @@ volumes:
     mariadb_volume:
         driver: local
         driver_opts:
-            type: 'none'
-            o: 'bind'
-            device: '${VOLUME_PATH}/mariadb'
+            type: none
+            o: bind
+            # device: '${VOLUME_PATH}/mariadb'
+            device: /home/jludt/data/mariadb
     wordpress_volume:
         driver: local
         driver_opts:
-            type: 'none'
-            o: 'bind'
-            device: '${VOLUME_PATH}/wordpress'
+            type: none
+            o: bind
+            # device: '${VOLUME_PATH}/wordpress'
+            device: /home/jludt/data/wordpress

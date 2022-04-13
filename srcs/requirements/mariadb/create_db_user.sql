@@ -19,3 +19,9 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'jludt'@'%';
 FLUSH PRIVILEGES;
 
 ALTER USER 'root'@'localhost' IDENTIFIED BY '4242';
+
+
+-- docker exec -it <container_name> bash
+-- connect to mariadb: mysql -u username -p <password>
+-- show databases;
+-- use <name_of_database>

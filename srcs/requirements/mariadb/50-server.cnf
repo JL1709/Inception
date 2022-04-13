@@ -1,6 +1,6 @@
 # https://gdevops.gitlab.io/tuto_databases/mariadb/installation/debian/10/10.html
 # MariaDB configuration files 
-# 
+#
 # These groups are read by MariaDB server.
 # Use it for options that only the server (but not clients) should see
 #
@@ -27,7 +27,7 @@ lc-messages-dir         = /usr/share/mysql
 
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address            = 0.0.0.0
+# bind-address            = wordpress
 
 #
 # * Fine Tuning
