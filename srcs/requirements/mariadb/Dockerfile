@@ -3,13 +3,12 @@ FROM debian:buster
 
 # The RUN instruction will execute any commands in a new layer on top of the current image and commit the results. 
 # The resulting committed image will be used for the next step in the Dockerfile.
+
 # apt-get update:                       update packages
-# apt-get install -y mariadb-server:    install MariaDB 
+# apt-get install -y mariadb-server:    install MariaDB (flag -y -> "yes")
 # rm -rf /var/lib/apt/lists/*:          good practice for writing Dockerfiles
 #                                       every apt command gets written inside a list
-#                                       to keep container small, erase the cache                                  
-
-# Install MariaDB
+#                                       to keep image size small, erase the cache                                  
 RUN apt-get update && \
     apt-get install -y mariadb-server && \
     rm -rf /var/lib/apt/lists/*
@@ -20,14 +19,17 @@ RUN apt-get update && \
 # COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
 # The COPY instruction copies new files or directories from <src> and adds them to the 
 # filesystem of the container at the path <dest>.
+
 # load MariaDB config file
 COPY 50-server.conf /etc/mysql/mariadb.conf.d
-
 # create database and users
 COPY create_db_user.sql /
 
 
 # START WORKING HERE!!!!!!!
+# service mysql start:          start MariaDB server
+# mysql < create_db_user.sql    ...with created user in file create_db_user.sql   ???
+# rm -rf create_db_user.sql     why remove???
 
 RUN service mysql start && \
     mysql < create_db_user.sql && \
