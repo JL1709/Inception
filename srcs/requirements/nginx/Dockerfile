@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 # set nginx configuration
-COPY default /etc/nginx/sites-available
+COPY nginx.conf /etc/nginx/sites-available/default
 
 # create openssl certificate
 # https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html
@@ -38,8 +38,6 @@ COPY default /etc/nginx/sites-available
 #                   In reality, it’s an SSL certificate that relies on the SHA256 algorithm.
 # -subj arg         sets subject name for new request or supersedes the subject name when processing a request (CN = commonName)
 RUN openssl req -x509 -days 365 -nodes -newkey rsa:4096 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/certs/nginx.crt -sha256 -subj "/CN=jludt.42.fr" 
-
-EXPOSE 443
 
 # If you add a custom CMD in the Dockerfile, be sure to include -g daemon off; in the CMD in order for nginx to stay in the foreground, 
 # so that Docker can track the process properly (otherwise your container will stop immediately after starting)!

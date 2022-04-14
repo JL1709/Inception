@@ -1,4 +1,5 @@
 # Builds, (re)creates, starts, and attaches to containers for a service.
+# -f	Specify an alternate compose file (default: docker-compose.yml)
 all:
 	sudo docker-compose -f ./srcs/docker-compose.yml up
 

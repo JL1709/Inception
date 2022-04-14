@@ -14,7 +14,7 @@
 -- ALTER USER 'root'@'localhost' IDENTIFIED BY '4242'   (re)set the password for the database 'root'@'localhost' account
 
 CREATE DATABASE wordpress;
-CREATE USER 'jludt'@'%' IDENTIFIED BY 'password';
+CREATE USER 'jludt'@'%' IDENTIFIED BY 'root';
 GRANT ALL PRIVILEGES ON wordpress.* TO 'jludt'@'%';
 FLUSH PRIVILEGES;
 

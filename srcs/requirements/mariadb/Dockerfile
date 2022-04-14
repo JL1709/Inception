@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
     mariadb-server && \
     rm -rf /var/lib/apt/lists/*
 
-
 # COPY has two forms:
 # COPY [--chown=<user>:<group>] <src>... <dest>
 # COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
@@ -25,8 +24,6 @@ COPY 50-server.cnf /etc/mysql/mariadb.conf.d
 # create database and users
 COPY create_db_user.sql /
 
-
-# START WORKING HERE!!!!!!!
 # service mysql start:          start MariaDB server
 # mysql < create_db_user.sql    ...with created user in file create_db_user.sql
 # rm -rf create_db_user.sql     ...and remove it because it user already created
@@ -34,10 +31,6 @@ COPY create_db_user.sql /
 RUN service mysql start && \
     mysql < create_db_user.sql && \
     rm -rf create_db_user.sql
-
-#  The EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime.
-EXPOSE 3306
-
 
 # There can only be one CMD instruction in a Dockerfile. 
 # If you list more than one CMD then only the last CMD will take effect.

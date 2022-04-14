@@ -5,7 +5,7 @@
 # version 3:    Designed to be cross-compatible between Compose and the Docker Engine’s swarm mode, 
 #               version 3 removes several options and adds several more.
 #               If not specified further, 3.0 is selected
-version: '3'
+version: '3.5'
 
 # A service definition contains configuration that is applied to each container started for that service
 # As with docker run, options specified in the Dockerfile, such as CMD, EXPOSE, VOLUME, ENV,
@@ -28,7 +28,7 @@ version: '3'
 #                                   TARGET is the container path where the volume is mounted.
 #                                   used here: named volume
 # restart:          When always is specified, the container always restarts.
-# envirotnment:     Add environment variables. You can use either an array or a dictionary.
+# environnment:     Add environment variables. You can use either an array or a dictionary.
 # depends_on        Express dependency between services.
 #                   "docker-compose up" starts services in dependency order.
 services:
@@ -54,10 +54,18 @@ services:
         volumes:
             - wordpress_volume:/var/www/wordpress
         environment:
-            - DB_NAME=wordpress
-            - HOST_NAME=mariadb
-            - USER_NAME=jludt
-            - USER_PASS=password
+            - DB_NAME=$DB_NAME
+            - DB_USER=$DB_USER
+            - DB_PASSWORD=$DB_PASSWORD
+            - DB_HOST=$DB_HOST
+            - WP_TITLE=$WP_TITLE
+            - WP_ADMIN_USER=$WP_ADMIN_USER
+            - WP_ADMIN_PASSWORD=$WP_ADMIN_PASSWORD
+            - WP_ADMIN_MAIL=$WP_ADMIN_MAIL
+            - WP_USER=$WP_USER
+            - WP_USER_MAIL=$WP_USER_MAIL
+            - WP_USER_PASSWORD=$WP_USER_PASSWORD
+            - WP_URL=$WP_URL
         depends_on:
             - mariadb
         restart: always
@@ -71,15 +79,6 @@ services:
             - inception
         volumes:
             - wordpress_volume:/var/www/wordpress
-        environment:
-            # - DB_NAME=${DB_NAME}
-            # - USER_NAME=${USER_NAME}
-            # - USER_PASS=${USER_PASS}
-            # - ROOT_PASS=${ROOT_PASS}
-            - DB_NAME=wordpress
-            - USER_NAME=jludt
-            - USER_PASS=password
-            - ROOT_PASS=4242
         depends_on:
           - wordpress
         restart: always
@@ -107,12 +106,10 @@ volumes:
         driver_opts:
             type: none
             o: bind
-            # device: '${VOLUME_PATH}/mariadb'
             device: /home/jludt/data/mariadb
     wordpress_volume:
         driver: local
         driver_opts:
             type: none
             o: bind
-            # device: '${VOLUME_PATH}/wordpress'
             device: /home/jludt/data/wordpress
