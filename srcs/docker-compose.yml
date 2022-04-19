@@ -98,7 +98,6 @@ networks:
 #               Defaults to whatever driver the Docker Engine has been configured to use, which in most cases is local. 
 # driver_opts:  Specify a list of options as key-value pairs to pass to the driver for this volume.
 # type:         'none' -> no physical disk partition linked to the mount point
-# o:            ???
 # device:       path to safed volumes        
 volumes:
     mariadb_volume:

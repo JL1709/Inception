@@ -12,6 +12,8 @@ wp core install --title=$WP_TITLE \
 				--url=$WP_URL \
 				--allow-root
 
-wp user create $WP_USER "$WP_USER_MAIL" --role=author --user_pass=$WP_USER_PASSWORD --allow-root
+wp user create $WP_USER $WP_USER_MAIL --role=author --user_pass=$WP_USER_PASSWORD --allow-root
 cd -
+
+# run php-fpm7.3 listening for CGI request and force to stay in foreground and ignore daemonize option fromm configuration file
 php-fpm7.3 -F
